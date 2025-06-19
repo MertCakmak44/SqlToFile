@@ -15,7 +15,7 @@ namespace MyAppService.Validators
                 .NotEmpty().WithMessage("Ürün ismi boş olamaz");
 
             RuleFor(x => x.Price)
-                .LessThan(0).WithMessage("Sıfırdan düşük değer olamaz");
+                .GreaterThanOrEqualTo(0).WithMessage("Ürün fiyatı 0'dan küçük olamaz");
         }
     }
 }
