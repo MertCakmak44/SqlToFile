@@ -21,6 +21,9 @@ namespace MyAppData.Context
 
 
 
+
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>().ToTable("Customers");
