@@ -25,7 +25,7 @@ namespace MyAppService.Services
                 await _context.SaveChangesAsync();
                 return stock;
             }
-            catch(DbUpdateException ex)
+            catch (DbUpdateException ex)
 
             {
                 if (ex.InnerException?.Message.Contains("PRIMARY KEY") == true)
@@ -67,6 +67,12 @@ namespace MyAppService.Services
         {
             return await _context.Stocks.FindAsync(id);
         }
+        public async Task DeleteAllAsync()
+        {
+            var allStocks = await _context.Stocks.ToListAsync();
+            _context.Stocks.RemoveRange(allStocks);
+            await _context.SaveChangesAsync();
 
+        }
     }
 }

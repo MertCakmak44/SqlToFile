@@ -17,6 +17,8 @@ namespace MyAppCore.Interfaces
         Task DeleteAsync(int id);
         Task<Customer> GetByIdAsync(int id);
         Task UpdateAsync(CustomerUpdateDto customerDto);
+        Task DeleteAllAsync();
+
 
     }
 }

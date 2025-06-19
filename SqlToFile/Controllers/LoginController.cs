@@ -40,7 +40,7 @@ namespace SqlToFile.Controllers
             if (existingUser != null)
                 return BadRequest(new { message = "Bu kullanıcı adı zaten kayıtlı." });
 
-            var newUser = new User { Username = user.Username, Password = user.Password };
+            var newUser = new User { Username = user.Username, Password = user.Password,Role="User"};
             await _userService.AddAsync(newUser);
             return Ok(new { message = "Kayıt başarılı!" });
         }
@@ -76,7 +76,8 @@ namespace SqlToFile.Controllers
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Role,user.Role)
             };
 
             var token = new JwtSecurityToken(

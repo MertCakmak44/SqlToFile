@@ -16,7 +16,7 @@ namespace MyAppService.Services
 {
     public class CustomerServices : ICustomerService
     {
-        
+
         private readonly BilnexDbContext _context;
         public CustomerServices(BilnexDbContext context)
         {
@@ -41,8 +41,8 @@ namespace MyAppService.Services
 
                 throw new Exception("Veritabanı hatası oluştu: " + ex.InnerException?.Message);
             }
-        
-         }
+
+        }
         public async Task DeleteAsync(int id)
         {
             var customer = await _context.Customers.FindAsync(id);
@@ -71,6 +71,12 @@ namespace MyAppService.Services
         public async Task<Customer> GetByIdAsync(int id)
         {
             return await _context.Customers.FindAsync(id);
+        }
+        public async Task DeleteAllAsync()
+        {
+            var allCustomers = await _context.Customers.ToListAsync();
+            _context.Customers.RemoveRange(allCustomers);
+            await _context.SaveChangesAsync();
         }
     }
 }
