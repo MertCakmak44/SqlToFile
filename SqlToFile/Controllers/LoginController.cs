@@ -48,15 +48,22 @@ namespace SqlToFile.Controllers
         [HttpPut("{username}")]
         public async Task<IActionResult> Update(string username, [FromBody] UserUpdateDto updatedDto)
         {
+            if (username.ToLower() == "admin")
+                return BadRequest(new { message = "Admin kullanıcısının bilgileri güncellenemez." });
+
             var user = await _userService.GetByUsernameAsync(username);
             if (user == null)
                 return NotFound(new { message = "Kullanıcı bulunamadı." });
+            
+            if (user.Username.ToLower() == "admin" || user.Role?.ToLower() == "admin")
+                return BadRequest(new { message = "Admin kullanıcısının bilgileri güncellenemez." });
 
-            updatedDto.Username = username;
-            var result = await _userService.UpdateAsync(updatedDto);
+            updatedDto.Username = username; // Güncellenmesini istemiyoruz
+            await _userService.UpdateAsync(updatedDto);
 
             return Ok(new { message = "Kullanıcı güncellendi." });
         }
+
         [HttpDelete("{username}")]
         public async Task<IActionResult> Delete(string username)
         {

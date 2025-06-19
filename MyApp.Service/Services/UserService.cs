@@ -1,23 +1,29 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using MyAppCore.Dtos;
 using MyAppCore.Entities;
 using MyAppCore.Interfaces;
 using MyAppData.Context;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyAppService.Services
 {
     public class UserService : IUserService
     {
         private readonly BilnexDbContext _context;
+        private readonly IMapper _mapper;
 
-        public UserService(BilnexDbContext context)
+        public UserService(BilnexDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<List<User>> GetAllAsync()
+        public async Task<List<UserDto>> GetAllAsync()
         {
-            return await _context.Users.ToListAsync();
+            var users = await _context.Users.ToListAsync();
+            return _mapper.Map<List<UserDto>>(users);
         }
 
         public async Task<User> AddAsync(User user)
@@ -43,12 +49,10 @@ namespace MyAppService.Services
             if (user == null)
                 return null;
 
-            user.Password = updatedUser.Password;
-            _context.Users.Update(user);
+            _mapper.Map(updatedUser, user);
             await _context.SaveChangesAsync();
             return user;
         }
-
 
         public async Task<User> GetByUsernameAsync(string username)
         {

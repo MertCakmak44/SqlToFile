@@ -3,26 +3,21 @@ using MyAppCore.Dtos;
 using MyAppCore.Entities;
 using MyAppCore.Interfaces;
 using MyAppData.Context;
-using System;
-using System.Collections.Generic;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading.Tasks;
-
+using AutoMapper;
 
 namespace MyAppService.Services
 {
     public class CustomerServices : ICustomerService
     {
-
         private readonly BilnexDbContext _context;
-        public CustomerServices(BilnexDbContext context)
+        private readonly IMapper _mapper;
+
+        public CustomerServices(BilnexDbContext context, IMapper mapper)
         {
             _context = context;
-
+            _mapper = mapper;
         }
+
         public async Task<Customer> AddAsync(Customer customer)
         {
             try
@@ -32,17 +27,14 @@ namespace MyAppService.Services
                 return customer;
             }
             catch (DbUpdateException ex)
-
             {
                 if (ex.InnerException?.Message.Contains("PRIMARY KEY") == true)
-                {
                     throw new Exception("Bu ID'ye sahip müşteri zaten mevcut.");
-                }
 
                 throw new Exception("Veritabanı hatası oluştu: " + ex.InnerException?.Message);
             }
-
         }
+
         public async Task DeleteAsync(int id)
         {
             var customer = await _context.Customers.FindAsync(id);
@@ -52,26 +44,31 @@ namespace MyAppService.Services
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task<List<Customer>> GetAllAsync()
-        {
-            return await _context.Customers.ToListAsync();
 
+        public async Task<List<CustomerDto>> GetAllAsync()
+        {
+            var customers = await _context.Customers.ToListAsync();
+            return _mapper.Map<List<CustomerDto>>(customers);
         }
+
+        public async Task<Customer> GetByIdAsync(int id)
+        {
+            return await _context.Customers.FindAsync(id);
+        }
+
         public async Task UpdateAsync(CustomerUpdateDto dto)
         {
             var customer = await _context.Customers.FindAsync(dto.Id);
             if (customer == null)
                 throw new Exception("Müşteri bulunamadı.");
 
-            customer.Name = dto.Name;
-            customer.Sname = dto.Sname;
+            // DTO'dan mevcut varlık güncelleniyor
+            _mapper.Map(dto, customer);
 
+            // Güncelleme işlemi
             await _context.SaveChangesAsync();
         }
-        public async Task<Customer> GetByIdAsync(int id)
-        {
-            return await _context.Customers.FindAsync(id);
-        }
+
         public async Task DeleteAllAsync()
         {
             var allCustomers = await _context.Customers.ToListAsync();

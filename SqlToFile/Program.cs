@@ -9,6 +9,8 @@ using System.Text;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MyAppService.Validators;
+using AutoMapper;
+using MyAppCore.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +43,8 @@ builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<StockValidator>();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 
 builder.Services.AddSwaggerGen(c =>
 {
