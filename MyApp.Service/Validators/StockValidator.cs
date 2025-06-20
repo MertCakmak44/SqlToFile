@@ -16,6 +16,10 @@ namespace MyAppService.Validators
 
             RuleFor(x => x.Price)
                 .GreaterThanOrEqualTo(0).WithMessage("Ürün fiyatı 0'dan küçük olamaz");
+            
+            RuleFor(x => x.Amount)
+                .GreaterThanOrEqualTo(0).WithMessage("Miktar 0'dan küçük olamaz");
+
         }
     }
 }

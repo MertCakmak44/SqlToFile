@@ -27,6 +27,7 @@ namespace MyAppData.Context
             modelBuilder.Entity<Stock>().Property(s => s.ID).HasColumnName("ID");
             modelBuilder.Entity<Stock>().Property(s => s.Name).HasColumnName("Name");
             modelBuilder.Entity<Stock>().Property(s => s.Price).HasColumnName("Price");
+            modelBuilder.Entity<Stock>().Property(s => s.Amount).HasColumnName("Amount");
 
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<User>().Property(x => x.Id).HasColumnName("Id");

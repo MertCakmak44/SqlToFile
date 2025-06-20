@@ -15,7 +15,7 @@ namespace MyAppCore.Mappings
             // Stock
             CreateMap<Stock, StockDto>().ReverseMap();
             CreateMap<StockUpdateDto, Stock>().ReverseMap();
-            
+
             // User
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<UserUpdateDto, User>();

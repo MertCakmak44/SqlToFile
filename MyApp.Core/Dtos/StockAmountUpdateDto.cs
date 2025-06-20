@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace MyAppCore.Dtos
 {
-    public class StockDto
+    public class StockAmountUpdateDto
     {
-        public string Name { get; set; }
-        public int Price { get; set; }
-        public int Amount { get; set; }
-
+        public int Id { get; set; }
+        public int Added { get; set; }
+        public int Removed { get; set; }
     }
 }

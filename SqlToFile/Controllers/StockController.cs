@@ -48,6 +48,32 @@ namespace SqlToFile.Controllers
             await _stockService.DeleteAsync(id);
             return Ok();
         }
+        [HttpPost("update-amount")]
+        public async Task<IActionResult> UpdateStockAmount([FromBody] StockAmountUpdateDto dto)
+        {
+            var stock = await _stockService.GetByIdAsync(dto.Id);
+            if (stock == null)
+                return NotFound(new { message = "Ürün bulunamadı." });
+
+            int currentAmount = stock.Amount;
+            int newAmount = currentAmount + dto.Added - dto.Removed;
+
+            if (newAmount < 0)
+                return BadRequest(new { message = "Bu kadar ürün yok, çıkarılamaz." });
+
+            stock.Amount = newAmount;
+
+            await _stockService.UpdateAsync(new StockUpdateDto
+            {
+                ID = stock.ID,
+                Name = stock.Name,
+                Price = stock.Price,
+                Amount = stock.Amount
+            });
+
+            return Ok(new { message = "Stok başarıyla güncellendi.", newAmount = stock.Amount });
+        }
+
 
     }
 }
