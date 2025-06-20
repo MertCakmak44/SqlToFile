@@ -15,6 +15,8 @@ namespace MyAppData.Context
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Sale> Sales { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +35,25 @@ namespace MyAppData.Context
             modelBuilder.Entity<User>().Property(x => x.Id).HasColumnName("Id");
             modelBuilder.Entity<User>().Property(x => x.Username).HasColumnName("Username");
             modelBuilder.Entity<User>().Property(x => x.Password).HasColumnName("Password");
+
+
+            modelBuilder.Entity<Sale>()
+    .HasOne(s => s.Customer)
+    .WithMany()
+    .HasForeignKey(s => s.CustomerId)
+    .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Sale>()
+                .HasOne(s => s.Stock)
+                .WithMany()
+                .HasForeignKey(s => s.StockId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Purchase>()
+                .HasOne(p => p.Stock)
+                .WithMany()
+                .HasForeignKey(p => p.StockId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
