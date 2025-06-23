@@ -73,7 +73,18 @@ namespace SqlToFile.Controllers
 
             return Ok(new { message = "Stok başarıyla güncellendi.", newAmount = stock.Amount });
         }
-
-
+        [HttpPut("update-price")]
+        public async Task<IActionResult> UpdatePrice([FromBody] StockPriceUpdateDto dto)
+        {
+            try
+            {
+                await _stockService.UpdatePriceAsync(dto);
+                return Ok(new { message = "Fiyat güncellendi." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }

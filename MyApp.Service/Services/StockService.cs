@@ -67,6 +67,15 @@ namespace MyAppService.Services
             _mapper.Map(dto, stock);
             await _context.SaveChangesAsync();
         }
+        public async Task UpdatePriceAsync(StockPriceUpdateDto dto)
+        {
+            var stock = await _context.Stocks.FindAsync(dto.StockId);
+            if (stock == null)
+                throw new Exception("Ürün bulunamadı.");
+
+            stock.Price = dto.NewPrice;
+            await _context.SaveChangesAsync();
+        }
 
         public async Task DeleteAllAsync()
         {

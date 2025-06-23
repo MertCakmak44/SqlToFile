@@ -11,6 +11,7 @@ namespace MyAppCore.Interfaces
         Task<Stock> GetByIdAsync(int id);
         Task<Stock> AddAsync(Stock stock);
         Task UpdateAsync(StockUpdateDto dto);
+        Task UpdatePriceAsync(StockPriceUpdateDto dto);
         Task DeleteAsync(int id);
         Task DeleteAllAsync();
     }
