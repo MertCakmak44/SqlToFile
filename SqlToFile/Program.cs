@@ -35,6 +35,9 @@ builder.Services.AddDbContext<BilnexDbContext>(options =>
 builder.Services.AddScoped<IStockService, StockService>();
 builder.Services.AddScoped<ICustomerService, CustomerServices>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISaleService, SaleService>();
+builder.Services.AddScoped<IPurchaseService, PurchaseService>();
+
 
 
 builder.Services.AddControllers();

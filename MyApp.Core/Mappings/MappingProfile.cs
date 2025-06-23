@@ -19,6 +19,10 @@ namespace MyAppCore.Mappings
             // User
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<UserUpdateDto, User>();
+
+            //Sale and Purchase
+            CreateMap<SaleCreateDto, Sale>();
+            CreateMap<PurchaseCreateDto, Purchase>();
         }
     }
 }

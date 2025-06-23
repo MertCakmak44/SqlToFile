@@ -13,7 +13,7 @@ namespace MyAppCore.Entities
         public int CustomerId { get; set; }
         public DateTime SaleDate { get; set; }
         public int Amount { get; set; }
-        public decimal TotalPrice { get; set; }
+        public int TotalPrice { get; set; }
         // Navigation properties
         public Stock Stock { get; set; }
         public Customer Customer { get; set; }

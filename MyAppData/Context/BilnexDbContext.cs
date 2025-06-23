@@ -38,10 +38,10 @@ namespace MyAppData.Context
 
 
             modelBuilder.Entity<Sale>()
-    .HasOne(s => s.Customer)
-    .WithMany()
-    .HasForeignKey(s => s.CustomerId)
-    .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(s => s.Customer)
+                .WithMany()
+                .HasForeignKey(s => s.CustomerId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Sale>()
                 .HasOne(s => s.Stock)
