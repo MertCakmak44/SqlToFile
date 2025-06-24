@@ -11,8 +11,15 @@ using FluentValidation.AspNetCore;
 using MyAppService.Validators;
 using AutoMapper;
 using MyAppCore.Mappings;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders();
+builder.Logging.AddLog4Net("log4net.config");
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -32,13 +39,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddDbContext<BilnexDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IStockService, StockService>();
 builder.Services.AddScoped<ICustomerService, CustomerServices>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISaleService, SaleService>();
 builder.Services.AddScoped<IPurchaseService, PurchaseService>();
-
-
 
 builder.Services.AddControllers();
 builder.Services.AddValidatorsFromAssemblyContaining<CustomerValidator>();
@@ -47,7 +53,6 @@ builder.Services.AddValidatorsFromAssemblyContaining<StockValidator>();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -72,9 +77,9 @@ builder.Services.AddSwaggerGen(c =>
             Array.Empty<string>()
         }
     });
+
     c.TagActionsBy(api => new[] { api.GroupName ?? api.ActionDescriptor.RouteValues["controller"] });
     c.DocInclusionPredicate((name, api) => true);
-
 });
 
 builder.Services.AddRazorPages();
