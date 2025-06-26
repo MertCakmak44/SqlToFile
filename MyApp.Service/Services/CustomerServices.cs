@@ -28,6 +28,12 @@ namespace MyAppService.Services
         {
             try
             {
+                // Otomatik ID verme
+                int maxId = await _context.Customers.AnyAsync()
+                    ? await _context.Customers.MaxAsync(c => c.Id)
+                    : 0;
+                customer.Id = maxId + 1;
+
                 _context.Customers.Add(customer);
                 await _context.SaveChangesAsync();
 
