@@ -34,16 +34,16 @@ namespace MyAppService.Services
             }
 
             var purchase = _mapper.Map<Purchase>(dto);
-            purchase.TotalCost = dto.Quantity * stock.Price;
+            purchase.TotalCost = dto.Amount * stock.Price;
             purchase.PurchaseDate = DateTime.Now;
-            stock.Amount += dto.Quantity;
+            stock.Amount += dto.Amount;
 
             _context.Purchases.Add(purchase);
             await _context.SaveChangesAsync();
 
             var username = _httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "Bilinmeyen";
             _logger.LogInformation("{Username} adlı kullanıcı yeni alım yaptı. Ürün: {ProductName}, Adet: {Quantity}, Toplam: {TotalCost}",
-                username, stock.Name, dto.Quantity, purchase.TotalCost);
+                username, stock.Name, dto.Amount, purchase.TotalCost);
 
             return purchase;
         }
