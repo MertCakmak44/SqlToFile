@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using MyAppCore.Entities;
 using MyAppCore.Interfaces;
@@ -11,6 +10,8 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
+using MyAppCore.Dtos;
+
 
 namespace MyAppService.Services
 {
@@ -72,6 +73,7 @@ namespace MyAppService.Services
 
             return sales;
         }
+
         public async Task DeleteAllAsync()
         {
             var allSales = await _context.Sales.ToListAsync();
@@ -79,5 +81,22 @@ namespace MyAppService.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<SaleDto>> GetAllDetailedAsync()
+        {
+            var sales = await _context.Sales
+                .Include(s => s.Customer)
+                .Include(s => s.Stock)
+                .ToListAsync();
+
+            return sales.Select(s => new SaleDto
+            {
+                Id = s.Id,
+                CustomerName = s.Customer?.Name,
+                StockName = s.Stock?.Name,
+                Amount = s.Amount,
+                TotalPrice = s.TotalPrice,
+                SaleDate = s.SaleDate
+            }).ToList();
+        }
     }
 }

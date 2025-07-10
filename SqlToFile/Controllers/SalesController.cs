@@ -4,6 +4,8 @@ using MyAppCore.Interfaces;
 using MyAppCore.Dtos;
 using System.Threading.Tasks;
 using MyAppCore.Entities;
+using MyAppCore.Dtos;
+
 
 namespace SqlToFile.Controllers
 {
@@ -17,16 +19,18 @@ namespace SqlToFile.Controllers
         {
             _saleService = saleService;
         }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] SaleCreateDto dto)
         {
             var sale = await _saleService.AddAsync(dto);
             return Ok(sale);
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var sales = await _saleService.GetAllAsync();
+            var sales = await _saleService.GetAllDetailedAsync(); // sadece DTO dönen metot
             return Ok(sales);
         }
     }
