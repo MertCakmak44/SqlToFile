@@ -13,6 +13,8 @@ namespace MyAppCore.Interfaces
     {
         Task<Purchase> AddAsync(PurchaseCreateDto dto);
         Task<List<Purchase>> GetAllAsync();
+        Task DeleteAllAsync();
+
 
 
     }

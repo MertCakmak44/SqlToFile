@@ -12,6 +12,8 @@ namespace MyAppCore.Interfaces
     {
         Task<Sale> AddAsync(SaleCreateDto dto);
         Task<List<Sale>> GetAllAsync();
+        Task DeleteAllAsync();
+
 
     }
 }

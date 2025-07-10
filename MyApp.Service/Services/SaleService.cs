@@ -72,5 +72,12 @@ namespace MyAppService.Services
 
             return sales;
         }
+        public async Task DeleteAllAsync()
+        {
+            var allSales = await _context.Sales.ToListAsync();
+            _context.Sales.RemoveRange(allSales);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

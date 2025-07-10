@@ -12,19 +12,30 @@ namespace SqlToFile.Controllers
     {
         private readonly ICustomerService _customerService;
         private readonly IStockService _stockService;
-        public AdminController(ICustomerService customerService, IStockService stockService)
+        private readonly ISaleService _saleService;
+        private readonly IPurchaseService _purchaseService;
+
+        public AdminController(
+            ICustomerService customerService,
+            IStockService stockService,
+            ISaleService saleService,
+            IPurchaseService purchaseService)
         {
             _customerService = customerService;
             _stockService = stockService;
+            _saleService = saleService;
+            _purchaseService = purchaseService;
         }
+
         [HttpDelete("delete-all-data")]
-        public async Task<IActionResult> DeleteAllCustomerAndStocks()
+        public async Task<IActionResult> DeleteAllData()
         {
             await _customerService.DeleteAllAsync();
             await _stockService.DeleteAllAsync();
+            await _saleService.DeleteAllAsync();
+            await _purchaseService.DeleteAllAsync();
 
-            return Ok(new { message = "Tüm müşteri ve stok verileri silindi." });
-
+            return Ok(new { message = "Tüm müşteri, stok, satış ve alış verileri silindi." });
         }
     }
 }

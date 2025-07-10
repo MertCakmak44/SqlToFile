@@ -59,5 +59,12 @@ namespace MyAppService.Services
 
             return purchases;
         }
+        public async Task DeleteAllAsync()
+        {
+            var allPurchases = await _context.Purchases.ToListAsync();
+            _context.Purchases.RemoveRange(allPurchases);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }
